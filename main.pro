@@ -1,5 +1,5 @@
 # define your application name here 
-TARGET = yourAppName
+TARGET = CurveMaster
 
 # add your source cpp files here 
 SOURCES += \
