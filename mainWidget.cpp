@@ -224,11 +224,11 @@ void MainWindow::selectAll() {
 }
 
 void MainWindow::help() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+  system ("gedit README.txt");
 }
 
 void MainWindow::about() {
-  QString h = tr("<center><font size='12'> CurveMaster v. 1.0</font></center><br>"
+  QString h = tr("<center><font size='12'>CurveMaster v. 1.0</font></center><br>"
 		 "Description<br><br>"
 		 "Copyright (C) 2017 <br>"
 		 "Jacques Lindsay"
