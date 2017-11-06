@@ -180,7 +180,7 @@ void MainWindow::createMenus() {
   _animMenu->addAction(_firstFrameAct);
   _animMenu->addAction(_lastFrameAct);
 
-  _helpMenu = menuBar()->addMenu(tr("&Help"));
+  _helpMenu = menuBar()->addMenu(tr("&Info"));
   _helpMenu->addAction(_helpAct);
   _helpMenu->addAction(_aboutAct);
  }
@@ -232,7 +232,7 @@ void MainWindow::about() {
 		 "Description<br><br>"
 		 "Copyright (C) 2017 <br>"
 		 "Jacques Lindsay"
-		 "( <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr'</a>)<br>"
+		 " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr'</a> <br>"
 		 );
 		 
   QMessageBox::about(this,"About",h);
