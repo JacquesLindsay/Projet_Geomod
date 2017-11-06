@@ -228,13 +228,11 @@ void MainWindow::help() {
 }
 
 void MainWindow::about() {
-  QString h = tr("<center><font size='12'> YOUR APPLICATION NAME (VERSION...)</font></center><br>"
+  QString h = tr("<center><font size='12'> CurveMaster v. 1.0</font></center><br>"
 		 "Description<br><br>"
-		 "Copyright (C) YEAR: <br>"
-		 "EXAMPLE:<br>"
-		 "<a href='http://maverick.inria.fr/~Romain.Vergne/'>Romain Vergne</a> "
-		 "( <a href='mailto:romain.vergne@inria.fr'>romain.vergne@inria.fr</a> ) <br>"
-		 "OTHER STUDENTS...<br>"
+		 "Copyright (C) 2017 <br>"
+		 "Jacques Lindsay"
+		 "( <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr'</a>)<br>"
 		 );
 		 
   QMessageBox::about(this,"About",h);
