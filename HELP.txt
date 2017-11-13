@@ -1,0 +1,23 @@
+This software will enable you to create and edit curves.
+
+In order to start a curve, left-click click on the graph.
+You can then keep clicking on points in the graph in order to add points to the curve.
+In order to finish a curve, right-click on the graph. This will creat the final point in the curve.
+
+In order to move points on a curve, click on the "Edit" function in Tools. 
+This will also enable you to select a point on a curve.
+Once a pont is selected, any point that is created will be added after that point.
+You can choose to set points to be added before the selected point or delete the selected point in the options tab.
+
+The "Style" tab enables you to change the colour of the lines, the width of the lines, and the colour of the filling of the curves.
+
+The "Animation" tab enables you to choose the position of each point at each frame.
+Moving the slider enables you to choose a specific frame, and moving the points will specificy where they are placed at the given frame.
+Every point will move regularly towards the given position at the next frame where said position is specified.
+You can keep track of the position of each point at each frame via the keyframing window.
+
+The "Keyframing" tab enables you to save specific frames by pressing the "Add" button, and undo this with the "Delete" button.
+You can move from one keyframing to another with the "Pref kf" and "Next kf" button.
+Clicking "Point" will only show the selected point in the keyframing window, "Curve" every point in the selected curve, and "Scene" every point of every curve
+
+You can select which curve every set of point should define by selecting it in the drop-down list in the "Keyframing" tab and clicking "Appy" to apply it to the selected curve.

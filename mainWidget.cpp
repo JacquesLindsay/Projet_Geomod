@@ -8,6 +8,7 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSplitter>
+#include <QErrorMessage>
 #include "scene.h"
 
 using namespace std;
@@ -224,12 +225,19 @@ void MainWindow::selectAll() {
 }
 
 void MainWindow::help() {
-  int readme=system ("gedit README.txt");
+  QFile readme("HELP.txt");
+  if(readme.open(QIODevice::ReadOnly | QIODevice::Text)){
+      QString content = readme.readAll();
+      QMessageBox::information(this, "Help", content);
+  }
+  else{
+      QMessageBox::critical(this, "Help", "ERROR: HELP NOT FOUND");
+  }
+  readme.close();
 }
 
 void MainWindow::about() {
   QString h = tr("<center><font size='12'>CurveMaster v. 1.0</font></center><br>"
-		 "Description: This software will enable you to create and edit curves<br><br>"
 		 "Copyright (C) 2017 <br>"
 		 "Jacques Lindsay"
 		 " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr</a> <br>"
