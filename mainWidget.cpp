@@ -224,7 +224,7 @@ void MainWindow::selectAll() {
 }
 
 void MainWindow::help() {
-  system ("gedit README.txt");
+  int readme=system ("gedit README.txt");
 }
 
 void MainWindow::about() {
