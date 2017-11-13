@@ -229,10 +229,10 @@ void MainWindow::help() {
 
 void MainWindow::about() {
   QString h = tr("<center><font size='12'>CurveMaster v. 1.0</font></center><br>"
-		 "Description<br><br>"
+		 "Description: This software will enable you to create and edit curves<br><br>"
 		 "Copyright (C) 2017 <br>"
 		 "Jacques Lindsay"
-		 " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr'</a> <br>"
+		 " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr</a> <br>"
 		 );
 		 
   QMessageBox::about(this,"About",h);
