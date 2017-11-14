@@ -32,7 +32,8 @@ class Curve2DCircle : public Curve2D {
 		//compute the radius : 
 		float R=sqrt(pow(pt[0]-pt2[0],2)+pow(pt[1]-pt2[1],2))/2;
 		
-		unsigned int N=1000;
+		unsigned int N=1000
+		// array is a function that I've defined in the curve2D.h file
 		vector<float> t = array(0,2*3.14159,N);
 		vector<float> x;
 		vector<float> y;
