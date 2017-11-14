@@ -43,7 +43,7 @@ class Curve2DCircle : public Curve2D {
 		}
 		
 		// draw the circle
-		p.moveTo(pt[0],pt[1]);
+		p.moveTo(x[0],y[0]);
 		for (unsigned int i=0;i<t.size();i++){
 			p.lineTo(x[i],y[i]);
 		}
