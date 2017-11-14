@@ -32,14 +32,9 @@ class Curve2DBezier : public Curve2D {
 
 	// Draw the Bezier curve
 	// create vector t from 0 to 1
-	unsigned int N=100;
+	unsigned int N=1000;
+	// array is a function that I've defined in the curve2D.h file
 	vector<float> t = array(0.0,1.0,N);
-	//float step=1.0/N;
-	//vector<float> t;
-	//for(float i= 0.0; t.size()<=N; i+=step){
-	//	t.push_back(i);
-	//}
-	//cout<<"TODO : create a function array in curve2D.h"<<endl;
 	// create the berstein vector with values of t
 	vector<float> Bezierx;
 	vector<float> Beziery;
