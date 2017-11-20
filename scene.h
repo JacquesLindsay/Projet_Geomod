@@ -24,7 +24,7 @@ class Scene {
       _instance = new Scene();
     }
     return _instance;
-  } 
+
 
   inline void clean() {
     for(unsigned int i=0;i<nbCurves();++i) {

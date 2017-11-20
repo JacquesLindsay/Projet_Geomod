@@ -281,18 +281,21 @@ void MainWindow::settings() {
 }
 
 bool MainWindow::maybeSave() {
-  // QMessageBox::StandardButton ret;
-  // ret = QMessageBox::warning(this,tr("Question"),tr("Do you want to save your scene?"),
-  // 			     QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-  // if(ret==QMessageBox::Save)
-  //   return save();
-  // else //if(ret==QMessageBox::Cancel)
-  //   return false;
+  QMessageBox::StandardButton ret;
+  ret = QMessageBox::warning(this,tr("Question"),tr("Do you want to save your scene?"),
+                 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+  if(ret==QMessageBox::Save)
+    return save();
+  else if(ret==QMessageBox::Cancel)
+    return false;
   return true;
 }
 
 void MainWindow::clearAll() {
   cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+  Scene *sce = Scene::get();
+  sce->
+  }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
