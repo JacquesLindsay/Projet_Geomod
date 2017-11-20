@@ -29,7 +29,28 @@ class Curve2D {
       add(curve->get(i));
     }
   }
-  
+ 
+//function which compute factorial
+	long factorial(int x){
+		assert(x>=0);
+		if(x==0){return 1;}
+		long factorial=1;
+		for(int i = 1; i <=x; ++i)
+	    	{
+		factorial *= i;
+	    	}
+		return factorial;
+};
+
+//function which compute Bernstein polynomials
+	vector<double> Bernstein(int n, float t){
+		vector<double> B;
+		for(int i=0; i<n+1; i++){
+			B.push_back((factorial(n)/(factorial(i)*factorial(n-i))*pow(t,i)*pow((1-t),(n-i))));
+
+		}
+		return B;
+};
 // kind of numpy.linspace(begin,end,number)
 	vector<float> array(float begin,float end,unsigned int number){
 		float step=(end-begin)/number;
