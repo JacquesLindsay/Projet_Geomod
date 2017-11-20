@@ -16,7 +16,7 @@ using namespace std;
 void Scene::initCurveBuilders() {
   addCurveBuilder(new Curve2DLinearConstructor());
   addCurveBuilder(new Curve2DLinearClosedConstructor());
-  addCurveBuilder(new Curve2DBezierClosedConstructor());
+  addCurveBuilder(new Curve2DBezierConstructor());
   addCurveBuilder(new Curve2DCircleConstructor());
 
 
