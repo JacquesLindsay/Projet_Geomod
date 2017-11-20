@@ -26,6 +26,7 @@ class DrawingWidget : public QGraphicsView {
   void frameChanged();
   void setResol(int w,int h);
   void selectionChanged();
+  void deleteAllCurves();
 
  protected:
   virtual void keyPressEvent(QKeyEvent *event);
@@ -45,7 +46,7 @@ class DrawingWidget : public QGraphicsView {
   void addPointBeforeSelectedPoint(float x,float y);
   void addPointAfterSelectedPoint(float x,float y);
   void deleteSelectedPoint();
-  
+
   std::vector<std::vector<ControlPoint2D *> > _points;
   std::vector<Curve2DDrawer *>                _curves;
 };
