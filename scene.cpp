@@ -4,6 +4,7 @@
 #include "curve2DLinear.h"
 #include "curve2DBezier.h"
 #include "curve2DCircle.h"
+#include "curve2DCircleRadius.h"
 
 #include "curve2DLinearClosed.h"
 #include "curve1DLinear.h"
@@ -18,6 +19,8 @@ void Scene::initCurveBuilders() {
   addCurveBuilder(new Curve2DLinearClosedConstructor());
   addCurveBuilder(new Curve2DBezierConstructor());
   addCurveBuilder(new Curve2DCircleConstructor());
+  addCurveBuilder(new Curve2DCircleRadiusConstructor());
+
 
 
 }
