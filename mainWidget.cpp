@@ -8,13 +8,14 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSplitter>
+#include <QErrorMessage>
 #include "scene.h"
 
 using namespace std;
 
 const QString MainWindow::_DEFAULT_FILE_NAME = "untitled";
-const QString MainWindow::_APPLICATION_NAME = "yourAppName";
-const QString MainWindow::_APPLICATION_EXTENSION = ".yan";
+const QString MainWindow::_APPLICATION_NAME = "CurveMaster";
+const QString MainWindow::_APPLICATION_EXTENSION = ".cm";
 QDir MainWindow::_CURRENT_PATH = QDir::currentPath();
 
 MainWindow::MainWindow()
@@ -180,7 +181,7 @@ void MainWindow::createMenus() {
   _animMenu->addAction(_firstFrameAct);
   _animMenu->addAction(_lastFrameAct);
 
-  _helpMenu = menuBar()->addMenu(tr("&Help"));
+  _helpMenu = menuBar()->addMenu(tr("&Info"));
   _helpMenu->addAction(_helpAct);
   _helpMenu->addAction(_aboutAct);
  }
@@ -236,12 +237,12 @@ void MainWindow::help() {
 }
 
 void MainWindow::about() {
-  QString h = tr("<center><font size='12'>CurveMaster v. 1.21</font></center><br>"
-         "Copyright (C) 2017 <br>"
-         "Jacques Lindsay"
-         " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr</a> <br>"
-         );
-
+  QString h = tr("<center><font size='12'>CurveMaster v. 1.0</font></center><br>"
+		 "Copyright (C) 2017 <br>"
+		 "Jacques Lindsay"
+		 " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr</a> <br>"
+		 );
+		 
   QMessageBox::about(this,"About",h);
 }
 
@@ -280,18 +281,21 @@ void MainWindow::settings() {
 }
 
 bool MainWindow::maybeSave() {
-  // QMessageBox::StandardButton ret;
-  // ret = QMessageBox::warning(this,tr("Question"),tr("Do you want to save your scene?"),
-  // 			     QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-  // if(ret==QMessageBox::Save)
-  //   return save();
-  // else //if(ret==QMessageBox::Cancel)
-  //   return false;
+  QMessageBox::StandardButton ret;
+  ret = QMessageBox::warning(this,tr("Question"),tr("Do you want to save your scene?"),
+                 QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+  if(ret==QMessageBox::Save)
+    return save();
+  else if(ret==QMessageBox::Cancel)
+    return false;
   return true;
 }
 
 void MainWindow::clearAll() {
-  _drawingWidget->deleteAllCurves();
+  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+  Scene *sce = Scene::get();
+  sce->
+  }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
