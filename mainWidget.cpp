@@ -8,8 +8,9 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSplitter>
-#include <QErrorMessage>
 #include "scene.h"
+
+#include <string>
 
 using namespace std;
 
@@ -21,6 +22,8 @@ QDir MainWindow::_CURRENT_PATH = QDir::currentPath();
 MainWindow::MainWindow()
   : QMainWindow(),
     _timer(new QTimer(this)) {
+
+
 
    createActions();
    createMenus();
@@ -42,11 +45,9 @@ MainWindow::MainWindow()
    sp2->setStretchFactor(0,8);
    sp2->setStretchFactor(1,1);
    
-  connect(_timer,SIGNAL(timeout()),this,SLOT(timerEvent()));
+   connect(_timer,SIGNAL(timeout()),this,SLOT(timerEvent()));
 
    setCentralWidget(sp1);
-   
-   setCurrentFile("");
 }
 
 MainWindow::~MainWindow() {
@@ -78,7 +79,12 @@ void MainWindow::createActions() {
   _saveAct->setStatusTip(tr("Save the document to disk"));
   connect(_saveAct,SIGNAL(triggered()),this,SLOT(save()));
 
-  _exitAct = new QAction(tr("E&xit"), this);
+  _saveAsAct = new QAction(tr("&Save As"), this);
+  _saveAsAct->setShortcuts(QKeySequence::SaveAs);
+  _saveAsAct->setStatusTip(tr("Save the document under another name"));
+  connect(_saveAsAct,SIGNAL(triggered()),this,SLOT(saveAs()));
+
+  _exitAct = new QAction(tr("&Exit"), this);
   _exitAct->setShortcuts(QKeySequence::Quit);
   _exitAct->setStatusTip(tr("Exit the application"));
   connect(_exitAct,SIGNAL(triggered()),this,SLOT(closeAppli()));
@@ -162,6 +168,7 @@ void MainWindow::createMenus() {
   _fileMenu->addAction(_newAct);
   _fileMenu->addAction(_openAct);
   _fileMenu->addAction(_saveAct);
+  _fileMenu->addAction(_saveAsAct);
   _fileMenu->addSeparator();
   _fileMenu->addAction(_exitAct);
   
@@ -187,27 +194,60 @@ void MainWindow::createMenus() {
  }
 
 void MainWindow::newFile() {
-  if(maybeSave()) {
-    clearAll();
-    setCurrentFile("");
-  }
+    if(Scene::get()->nbCurves()>0){
+        if(maybeSave()) {
+            clearAll();
+            setCurrentFile(_DEFAULT_FILE_NAME);
+        }
+    }
+    else{
+        setCurrentFile(_DEFAULT_FILE_NAME);
+    }
 }
 
 void MainWindow::open() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+    QString name = QFileDialog::getOpenFileName(this, "Open file", "", _APPLICATION_EXTENSION);
+    QFile file(name);
+    setCurrentFile(name);
+    if (file.open(QIODevice::ReadOnly))
+    {
+        QTextStream stream(&file);
+        QString data = stream.readAll();
+        // _drawingWidget->stringToData(data); creer void drawingWidget::stringToData(QString data)
+
+    }
+
 }
 
 bool MainWindow::save() {
   if(_currentFile.isEmpty()) {
     return saveAs();
   } else {
-    cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+    //QString data = _drawingWidget->dataToString(); creer QString drawingWidget:dataToString()
+    QString data = "0"; // a enlever
+    QFile file(_CURRENT_PATH.canonicalPath()+_currentFile+_APPLICATION_EXTENSION);
+    if (file.open(QIODevice::WriteOnly))
+    {
+        QTextStream stream(&file);
+        stream << data << endl;
+        file.close();
+    }
     return false;
   }
 }
 
 bool MainWindow::saveAs() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+    //QString data = _drawingWidget->dataToString();
+    QString data = "0"; // a enlever
+    QString name = QFileDialog::getSaveFileName(this, "Save file", "", _APPLICATION_EXTENSION);
+    QFile file(name);
+    setCurrentFile(name);
+    if (file.open(QIODevice::WriteOnly))
+    {
+        QTextStream stream(&file);
+        stream << data << endl;
+        file.close();
+    }
 
   return false;
 }
@@ -237,12 +277,12 @@ void MainWindow::help() {
 }
 
 void MainWindow::about() {
-  QString h = tr("<center><font size='12'>CurveMaster v. 1.0</font></center><br>"
-		 "Copyright (C) 2017 <br>"
-		 "Jacques Lindsay"
-		 " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr</a> <br>"
-		 );
-		 
+  QString h = tr("<center><font size='12'>CurveMaster v. 1.21</font></center><br>"
+         "Copyright (C) 2017 <br>"
+         "Jacques Lindsay"
+         " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr</a> <br>"
+         );
+
   QMessageBox::about(this,"About",h);
 }
 
@@ -281,21 +321,18 @@ void MainWindow::settings() {
 }
 
 bool MainWindow::maybeSave() {
-  QMessageBox::StandardButton ret;
-  ret = QMessageBox::warning(this,tr("Question"),tr("Do you want to save your scene?"),
+   QMessageBox::StandardButton ret;
+   ret = QMessageBox::warning(this,tr("Question"),tr("Do you want to save your scene?"),
                  QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-  if(ret==QMessageBox::Save)
-    return save();
-  else if(ret==QMessageBox::Cancel)
-    return false;
+   if(ret==QMessageBox::Save)
+     return save();
+   else if(ret==QMessageBox::Cancel)
+     return false;
   return true;
 }
 
 void MainWindow::clearAll() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
-  Scene *sce = Scene::get();
-  sce->
-  }
+  _drawingWidget->deleteAllCurves();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
