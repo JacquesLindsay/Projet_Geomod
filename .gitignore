@@ -1,0 +1,6 @@
+#object
+*.o
+
+#makefile
+Makefile
+yourAp
