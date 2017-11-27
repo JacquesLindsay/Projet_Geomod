@@ -2,12 +2,13 @@
 
 // add all your types of 2D curves here 
 #include "curve2DLinear.h"
+#include "curve2DLinearClosed.h"
 #include "curve2DBezier.h"
 #include "curve2DCircle.h"
 #include "curve2DCircleRadius.h"
-
-#include "curve2DLinearClosed.h"
+#include "curve2DLagrange.h"
 #include "curve1DLinear.h"
+
 
 Scene *Scene::_instance = NULL;
 
@@ -20,10 +21,9 @@ void Scene::initCurveBuilders() {
   addCurveBuilder(new Curve2DBezierConstructor());
   addCurveBuilder(new Curve2DCircleConstructor());
   addCurveBuilder(new Curve2DCircleRadiusConstructor());
-
-
-
+  addCurveBuilder(new Curve2DLagrangeConstructor());
 }
+
 
 // add 1D curve builders (functions) here
 void Scene::initFunctionBuilders() {

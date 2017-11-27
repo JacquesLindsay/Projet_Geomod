@@ -22,7 +22,7 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      18,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -35,30 +35,26 @@ static const uint qt_meta_data_MainWindow[] = {
       34,   11,   29,   11, 0x08,
       41,   11,   29,   11, 0x08,
       50,   11,   11,   11, 0x08,
-      61,   11,   11,   11, 0x08,
-      68,   11,   11,   11, 0x08,
-      76,   11,   11,   11, 0x08,
-      88,   11,   11,   11, 0x08,
-      95,   11,   11,   11, 0x08,
-     103,   11,   29,   11, 0x08,
-     116,   11,   11,   11, 0x08,
-     128,   11,   11,   11, 0x08,
-     140,   11,   11,   11, 0x08,
-     153,   11,   11,   11, 0x08,
-     165,   11,   11,   11, 0x08,
-     172,   11,   11,   11, 0x08,
-     179,   11,   11,   11, 0x08,
+      57,   11,   11,   11, 0x08,
+      65,   11,   29,   11, 0x08,
+      78,   11,   11,   11, 0x08,
+      90,   11,   11,   11, 0x08,
+     102,   11,   11,   11, 0x08,
+     115,   11,   11,   11, 0x08,
+     127,   11,   11,   11, 0x08,
+     134,   11,   11,   11, 0x08,
+     141,   11,   11,   11, 0x08,
+     154,   11,   11,   11, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0newFile()\0open()\0bool\0"
-    "save()\0saveAs()\0settings()\0copy()\0"
-    "paste()\0selectAll()\0help()\0about()\0"
+    "save()\0saveAs()\0help()\0about()\0"
     "closeAppli()\0nextFrame()\0prevFrame()\0"
     "firstFrame()\0lastFrame()\0play()\0stop()\0"
-    "timerEvent()\0"
+    "timerEvent()\0settings()\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -73,21 +69,18 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 3: { bool _r = _t->saveAs();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 4: _t->settings(); break;
-        case 5: _t->copy(); break;
-        case 6: _t->paste(); break;
-        case 7: _t->selectAll(); break;
-        case 8: _t->help(); break;
-        case 9: _t->about(); break;
-        case 10: { bool _r = _t->closeAppli();
+        case 4: _t->help(); break;
+        case 5: _t->about(); break;
+        case 6: { bool _r = _t->closeAppli();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 11: _t->nextFrame(); break;
-        case 12: _t->prevFrame(); break;
-        case 13: _t->firstFrame(); break;
-        case 14: _t->lastFrame(); break;
-        case 15: _t->play(); break;
-        case 16: _t->stop(); break;
-        case 17: _t->timerEvent(); break;
+        case 7: _t->nextFrame(); break;
+        case 8: _t->prevFrame(); break;
+        case 9: _t->firstFrame(); break;
+        case 10: _t->lastFrame(); break;
+        case 11: _t->play(); break;
+        case 12: _t->stop(); break;
+        case 13: _t->timerEvent(); break;
+        case 14: _t->settings(); break;
         default: ;
         }
     }
@@ -125,9 +118,9 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 15)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 15;
     }
     return _id;
 }

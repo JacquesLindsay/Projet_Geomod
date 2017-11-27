@@ -26,10 +26,11 @@ HEADERS += \
     curve2D.h \
     curve1DLinear.h \
     curve2DLinear.h \
+    curve2DLinearClosed.h \
     curve2DBezier.h \
+    curve2DLagrange.h \
     curve2DCircle.h \
     curve2DCircleRadius.h \
-    curve2DLinearClosed.h \
     animatedPoint.h 
 
 TEMPLATE = app

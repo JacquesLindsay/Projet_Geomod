@@ -20,9 +20,9 @@ class Curve2DCircleRadius : public Curve2D {
 	pt.push_back(ptbis[0]);
 	pt.push_back(ptbis[1]);
 	// the 2 points represents the diameter of the CircleRadius
-	if(nbPts()==2){
+	for(unsigned int i=1;i<nbPts();++i){
 		// we compute the center of the CircleRadius
-		ptbis = evalAnimPt(get(1),frame);
+		ptbis = evalAnimPt(get(i),frame);
 		vector<int> pt2;
 		pt2.push_back(ptbis[0]);
 		pt2.push_back(ptbis[1]);
@@ -46,6 +46,10 @@ class Curve2DCircleRadius : public Curve2D {
 		for (unsigned int i=0;i<t.size();i++){
 			p.lineTo(x[i],y[i]);
 		}
+		pt.pop_back();
+		pt.pop_back();
+		pt.push_back(pt2[0]);
+		pt.push_back(pt2[1]);
 	}
 	return p;
 	}
