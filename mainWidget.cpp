@@ -47,6 +47,7 @@ MainWindow::MainWindow()
    
    connect(_timer,SIGNAL(timeout()),this,SLOT(timerEvent()));
 
+   setCurrentFile(_DEFAULT_FILE_NAME);
    setCentralWidget(sp1);
 }
 
@@ -88,29 +89,6 @@ void MainWindow::createActions() {
   _exitAct->setShortcuts(QKeySequence::Quit);
   _exitAct->setStatusTip(tr("Exit the application"));
   connect(_exitAct,SIGNAL(triggered()),this,SLOT(closeAppli()));
-
-  _copyAct = new QAction(tr("Copy"), this);
-  _copyAct->setShortcut(QKeySequence::Copy);
-  _copyAct->setStatusTip(tr("Copy selection"));
-  connect(_copyAct,SIGNAL(triggered()),this,SLOT(copy()));
-
-  _pasteAct = new QAction(tr("Paste"), this);
-  _pasteAct->setShortcut(QKeySequence::Paste);
-  _pasteAct->setStatusTip(tr("Paste selection"));
-  connect(_pasteAct,SIGNAL(triggered()),this,SLOT(paste()));
-
-  _selectAllAct = new QAction(tr("Select all"), this);
-  _selectAllAct->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_A));
-  _selectAllAct->setStatusTip(tr("Select/unselect all nodes"));
-  connect(_selectAllAct,SIGNAL(triggered()),this,SLOT(selectAll()));
-
-#ifdef __APPLE__
-  // Workaround on Mac to avoid Qt bug (copy, paste, selectAll disabled) when opening QFileDialog
-  // https://forum.qt.io/topic/51950/qt-mac-osx-few-menu-items-are-disabled-after-qfiledialog
-  _copyAct->setMenuRole(QAction::NoRole);
-  _pasteAct->setMenuRole(QAction::NoRole);
-  _selectAllAct->setMenuRole(QAction::NoRole);
-#endif
 
   _helpAct = new QAction(tr("&Help"), this);
   _helpAct->setStatusTip(tr("Show the application's Help"));
@@ -171,13 +149,8 @@ void MainWindow::createMenus() {
   _fileMenu->addAction(_saveAsAct);
   _fileMenu->addSeparator();
   _fileMenu->addAction(_exitAct);
-  
-  _editMenu = menuBar()->addMenu(tr("&Edit"));
-  _editMenu->addAction(_copyAct);
-  _editMenu->addAction(_pasteAct);
-  _editMenu->addAction(_selectAllAct);
-  _editMenu->addSeparator();
-  _editMenu->addAction(_settingsAct);
+
+
 
   _animMenu = menuBar()->addMenu(tr("&Animate"));
   _animMenu->addAction(_playAct);
@@ -187,6 +160,8 @@ void MainWindow::createMenus() {
   _animMenu->addAction(_prevFrameAct);
   _animMenu->addAction(_firstFrameAct);
   _animMenu->addAction(_lastFrameAct);
+  _animMenu->addSeparator();
+  _animMenu->addAction(_settingsAct);
 
   _helpMenu = menuBar()->addMenu(tr("&Info"));
   _helpMenu->addAction(_helpAct);
@@ -206,15 +181,17 @@ void MainWindow::newFile() {
 }
 
 void MainWindow::open() {
-    QString name = QFileDialog::getOpenFileName(this, "Open file", "", _APPLICATION_EXTENSION);
+    QString selectedfilter = "CurveMaster files (*"+_APPLICATION_EXTENSION+")";
+    QString filter = selectedfilter+";; All files (*)";
+    QString name = QFileDialog::getOpenFileName(this, "Open file", "", filter, &selectedfilter);
     QFile file(name);
-    setCurrentFile(name);
-    if (file.open(QIODevice::ReadOnly))
-    {
+    if (file.open(QIODevice::ReadOnly) && !name.isEmpty() && !name.isNull())
+    { 
+        cout << "hit2";
+        setCurrentFile(name.section(".",0,0));
         QTextStream stream(&file);
         QString data = stream.readAll();
         // _drawingWidget->stringToData(data); creer void drawingWidget::stringToData(QString data)
-
     }
 
 }
@@ -231,6 +208,7 @@ bool MainWindow::save() {
         QTextStream stream(&file);
         stream << data << endl;
         file.close();
+        return true;
     }
     return false;
   }
@@ -239,29 +217,21 @@ bool MainWindow::save() {
 bool MainWindow::saveAs() {
     //QString data = _drawingWidget->dataToString();
     QString data = "0"; // a enlever
-    QString name = QFileDialog::getSaveFileName(this, "Save file", "", _APPLICATION_EXTENSION);
-    QFile file(name);
-    setCurrentFile(name);
-    if (file.open(QIODevice::WriteOnly))
+    QString selectedfilter = "CurveMaster files (*"+_APPLICATION_EXTENSION+")";
+    QString filter = selectedfilter+";; All files (*)";
+    QString name = QFileDialog::getSaveFileName(this, "Save file", "", filter, &selectedfilter);
+    cout << name.toStdString();
+    QFile file(name+_APPLICATION_EXTENSION);
+    if (file.open(QIODevice::WriteOnly) && !name.isEmpty() && !name.isNull())
     {
+        setCurrentFile(name);
         QTextStream stream(&file);
         stream << data << endl;
         file.close();
+        return true;
     }
 
   return false;
-}
-
-void MainWindow::copy() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;  
-}
-
-void MainWindow::paste() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
-}
-
-void MainWindow::selectAll() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
 }
 
 void MainWindow::help() {
@@ -315,9 +285,9 @@ void MainWindow::stop() {
 }
 
 void MainWindow::settings() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
-  // AnimationSettings *w = new AnimationSettings(_graphWidget);
-  // w->show();
+  int a=0;
+  /*AnimationSettings *w = new AnimationSettings(_graphWidget);
+  w->show();*/
 }
 
 bool MainWindow::maybeSave() {
