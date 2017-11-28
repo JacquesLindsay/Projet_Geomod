@@ -14,8 +14,6 @@
 #include "curve1DLeastSquares.h"
 #include "animatedPoint.h"
 
-#include <iostream>
-
 using namespace std;
 
 class Scene {

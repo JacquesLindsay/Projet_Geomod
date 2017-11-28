@@ -10,6 +10,7 @@ class AnimatedPoint {
   AnimatedPoint(AnimatedPoint *apt);
   AnimatedPoint(const Vector2f &pt);
   AnimatedPoint(float x,float y);
+  AnimatedPoint(Curve1D *x, Curve1D *y);
   ~AnimatedPoint();
 
   inline Curve1D *getXCurve() { return _xcurve; }

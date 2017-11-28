@@ -4,9 +4,6 @@
 #include "drawingWidgetItems.h"
 #include <QMouseEvent>
 #include <QKeyEvent>
-#include <iostream>
-
-using namespace std;
 
 DrawingWidget::DrawingWidget(MainWindow *mainWindow,QWidget *parent)
   : QGraphicsView(parent),
@@ -227,7 +224,6 @@ void DrawingWidget::deleteAllCurves(){
     while(sce->nbCurves()>0){
         sce->setSelectedCurve(0);
         deleteSelectedCurve();
-        cout << sce->nbCurves() << "\n";
     }
 }
 

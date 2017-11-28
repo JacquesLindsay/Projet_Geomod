@@ -1,8 +1,5 @@
-#ifndef CURVE1DLEASTSQUARES
-#define CURVE1DLEASTSQUARES
-
-#ifndef CURVE_1D_LINEAR_H
-#define CURVE_1D_LINEAR_H
+#ifndef CURVE_1D_LEAST_SQUARES
+#define CURVE_1D_LEAST_SQUARES
 
 #include "curve1D.h"
 
@@ -30,14 +27,13 @@ class Curve1DLeastSquares : public Curve1D {
   float evalAt(float x) {
     float a,b;
     float xs = 0, ys=0, xys=0, xxs=0;
-    for (i=0;i<nbPts();i++)
-    {
+    for (unsigned int i=0;i<nbPts();i++){
         xs = xs + _points[i][0];
         ys = ys + _points[i][1];
         xys = xys + _points[i][0]*_points[i][0];
         xxs= xxs + _points[i][0]*_points[i][0];
     }
-    a = (n*xys - xs*ys)/(nbPts()*xxs - xs*xs);
+    a = (nbPts()*xys - xs*ys)/(nbPts()*xxs - xs*xs);
     b = (ys - a*xs)/nbPts();
     return(a*x+b);
   }
@@ -45,14 +41,11 @@ class Curve1DLeastSquares : public Curve1D {
 
 class Curve1DLeastSquaresConstructor : public Curve1DConstructor {
  public:
-  virtual ~Curve1DLeastSquaresConstructor()               {}
+  virtual ~Curve1DLeastSquaresConstructor()                     {}
   virtual const QString type() const                      { return "LeastSquares";             }
   virtual Curve1D *create(const QString &name)            { return new Curve1DLeastSquares(name);   }
   virtual Curve1D *create(Curve1D *c,const QString &name) { return new Curve1DLeastSquares(c,name); }
 };
 
-
-#endif // CURVE_1D_LINEAR_H
-
-#endif // CURVE1DLEASTSQUARES
+#endif // CURVE_1D_LEAST_SQUARES
 

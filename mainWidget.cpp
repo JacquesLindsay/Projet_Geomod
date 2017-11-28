@@ -8,9 +8,8 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <QSplitter>
-#include "scene.h"
 
-#include <string>
+#include "scene.h"
 
 using namespace std;
 
