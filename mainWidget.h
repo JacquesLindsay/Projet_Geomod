@@ -100,7 +100,6 @@ class MainWindow : public QMainWindow {
   QAction *_firstFrameAct;
   QAction *_lastFrameAct;
   QAction *_saveAsAct;
-  QAction *_settingsAct;
 
   static       QDir    _CURRENT_PATH;
   static const QString _DEFAULT_FILE_NAME;

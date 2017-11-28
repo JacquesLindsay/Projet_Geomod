@@ -23,8 +23,6 @@ MainWindow::MainWindow()
   : QMainWindow(),
     _timer(new QTimer(this)) {
 
-
-
    createActions();
    createMenus();
 
@@ -135,10 +133,6 @@ void MainWindow::createActions() {
   _stopAct->setShortcut(QKeySequence(Qt::SHIFT + Qt::Key_P));
   _stopAct->setStatusTip(tr("Stop animation"));
   connect(_stopAct,SIGNAL(triggered()),this,SLOT(stop()));
-
-  _settingsAct = new QAction(tr("Anim. Settings"), this);
-  _settingsAct->setStatusTip(tr("Set range and framerate"));
-  connect(_settingsAct,SIGNAL(triggered()),this,SLOT(settings()));
 }
 
 void MainWindow::createMenus() {
@@ -160,8 +154,6 @@ void MainWindow::createMenus() {
   _animMenu->addAction(_prevFrameAct);
   _animMenu->addAction(_firstFrameAct);
   _animMenu->addAction(_lastFrameAct);
-  _animMenu->addSeparator();
-  _animMenu->addAction(_settingsAct);
 
   _helpMenu = menuBar()->addMenu(tr("&Info"));
   _helpMenu->addAction(_helpAct);
@@ -181,47 +173,53 @@ void MainWindow::newFile() {
 }
 
 void MainWindow::open() {
+    newFile();
     QString selectedfilter = "CurveMaster files (*"+_APPLICATION_EXTENSION+")";
     QString filter = selectedfilter+";; All files (*)";
     QString name = QFileDialog::getOpenFileName(this, "Open file", "", filter, &selectedfilter);
     QFile file(name);
     if (file.open(QIODevice::ReadOnly) && !name.isEmpty() && !name.isNull())
-    { 
-        cout << "hit2";
+    {
         setCurrentFile(name.section(".",0,0));
         QTextStream stream(&file);
         QString data = stream.readAll();
-        // _drawingWidget->stringToData(data); creer void drawingWidget::stringToData(QString data)
+        Scene *sce = Scene::get();
+        vector<Curve2D*> curves = sce->stringToData(data);
+        _drawingWidget->transform(curves);
+        _animationWidget->transform(curves);
     }
 
 }
 
 bool MainWindow::save() {
-  if(_currentFile.isEmpty()) {
+  if(_currentFile.isEmpty() or _currentFile==_DEFAULT_FILE_NAME) {
     return saveAs();
-  } else {
-    //QString data = _drawingWidget->dataToString(); creer QString drawingWidget:dataToString()
-    QString data = "0"; // a enlever
-    QFile file(_CURRENT_PATH.canonicalPath()+_currentFile+_APPLICATION_EXTENSION);
-    if (file.open(QIODevice::WriteOnly))
-    {
-        QTextStream stream(&file);
-        stream << data << endl;
-        file.close();
-        return true;
-    }
-    return false;
+  }
+  else{
+      Scene *sce = Scene::get();
+      QString data = sce->dataToString();
+      QFile file(_CURRENT_PATH.canonicalPath()+_currentFile);
+      if (file.open(QIODevice::WriteOnly))
+      {
+          QTextStream stream(&file);
+          stream << data << endl;
+          file.close();
+          return true;
+      }
+      return false;
   }
 }
 
 bool MainWindow::saveAs() {
-    //QString data = _drawingWidget->dataToString();
-    QString data = "0"; // a enlever
+    Scene *sce = Scene::get();
+    QString data = sce->dataToString();
     QString selectedfilter = "CurveMaster files (*"+_APPLICATION_EXTENSION+")";
     QString filter = selectedfilter+";; All files (*)";
     QString name = QFileDialog::getSaveFileName(this, "Save file", "", filter, &selectedfilter);
-    cout << name.toStdString();
-    QFile file(name+_APPLICATION_EXTENSION);
+    if(!name.contains(_APPLICATION_EXTENSION)){
+        name.append(_APPLICATION_EXTENSION);
+    }
+    QFile file(name);
     if (file.open(QIODevice::WriteOnly) && !name.isEmpty() && !name.isNull())
     {
         setCurrentFile(name);
@@ -257,31 +255,41 @@ void MainWindow::about() {
 }
 
 bool MainWindow::closeAppli() {
-  return close();
+     return close();
 }
 
 void MainWindow::nextFrame() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+    _toolsWidget->nextClicked();
 }
 
 void MainWindow::prevFrame() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+  _toolsWidget->prevClicked();
 }
 
 void MainWindow::firstFrame() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+    Scene *sce = Scene::get();
+
+    sce->setCurrentFrame(0);
+    _toolsWidget->updateFrameNumber();
+    frameChanged();
+    refresh();
 }
 
 void MainWindow::lastFrame() {
-  cout << __FILE__ << " - " << __FUNCTION__ << ": TODO!" << endl;
+    Scene *sce = Scene::get();
+
+    sce->setCurrentFrame(sce->nbFrames()-1);
+    _toolsWidget->updateFrameNumber();
+    frameChanged();
+    refresh();
 }
 
 void MainWindow::play() {
-
+    playAnimation();
 }
 
 void MainWindow::stop() {
-
+    stopAnimation();
 }
 
 void MainWindow::settings() {

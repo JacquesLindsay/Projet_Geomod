@@ -9,7 +9,14 @@
 #include <QColor>
 #include "curve2D.h"
 #include "curve1D.h"
+#include "curve2DLinear.h"
+#include "curve1DLinear.h"
+#include "curve1DLeastSquares.h"
 #include "animatedPoint.h"
+
+#include <iostream>
+
+using namespace std;
 
 class Scene {
  public:
@@ -44,7 +51,6 @@ class Scene {
 
   inline Curve2D *createCurve(const QString &type,Curve2D *c=NULL) {
     std::map<QString,Curve2DConstructor *>::const_iterator n = _curveBuilders.find(type);
-
     assert(n!=_curveBuilders.end());
     Curve2DConstructor *cc = n->second;
     Curve2D *curve = c ? cc->create(c,type) : cc->create(type);
@@ -55,8 +61,8 @@ class Scene {
   } 
 
   inline Curve1D *createFunction(const QString &type,Curve1D *c=NULL) {
-    std::map<QString,Curve1DConstructor *>::const_iterator n = _functionBuilders.find(type);
 
+    std::map<QString,Curve1DConstructor *>::const_iterator n = _functionBuilders.find(type);
     assert(n!=_functionBuilders.end());
     Curve1DConstructor *cc = n->second;
     Curve1D *curve = c ? cc->create(c,type) : cc->create(type);
@@ -312,7 +318,7 @@ class Scene {
     std::map<QString,Curve1DConstructor *>::const_iterator mit(_functionBuilders.begin()),mend(_functionBuilders.end());
   
     for(;mit!=mend;++mit) { 
-      l.push_back(mit->first); 
+      l.push_back(mit->first);
     }
     return l;
   }
@@ -483,6 +489,47 @@ class Scene {
 
   inline void setEditMode(int m) {
     _editMode = m;
+  }
+
+  inline QString dataToString(){
+      QString data = QString();
+      for(unsigned int i=0; i<_curves.size(); i++){
+          if(i>0){
+              data.append('|');
+          }
+          data.append(_curves.at(i)->name());
+          data.append(';');
+          data.append(_curves.at(i)->curveToString());
+      }
+      return data;
+  }
+
+  inline vector<Curve2D *> stringToData(QString data){
+      _curves.clear();
+      cleanCurveBuilders();
+      cleanFunctionBuilders();
+      QStringList curves=data.split('|');
+      for(int i=0; i<curves.size(); i++){
+          QStringList aPoints=curves.at(i).split(';');
+          QString typec=aPoints.at(0);
+          Curve2DLinear curve=Curve2DLinear(typec);
+          for(int j=1; j<aPoints.size(); j++){
+                QStringList points=aPoints.at(j).split(",");
+                QString typep=points.at(0);
+                Curve1DLinear x=Curve1DLinear(typep);
+                Curve1DLinear y=Curve1DLinear(typep);
+                for(int k=1; k<points.size(); k++){
+                     QStringList txy=points.at(k).split(" ");
+                     initFunctionBuilders();
+                     x.add(Vector2f(txy[0].toFloat(),txy[1].toFloat()));
+                     y.add(Vector2f(txy[0].toFloat(),txy[2].toFloat()));
+                }
+                initCurveBuilders();
+                curve.add(new AnimatedPoint(&x,&y));
+          }
+         //  _curves.push_back(&curve); // cette ligne plante
+      }
+      return _curves;
   }
   
  private:
