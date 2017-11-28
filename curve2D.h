@@ -8,12 +8,10 @@
 #include <QString>
 #include <QPainterPath>
 #include <QColor>
-#include<math.h>
-#include<iostream>
 #include "animatedPoint.h"
 
 using namespace Eigen;
-using namespace std;
+
 class Curve2D {
  public:
   typedef Vector2f AnimPt;
@@ -29,16 +27,6 @@ class Curve2D {
       add(curve->get(i));
     }
   }
-  
-// kind of numpy.linspace(begin,end,number)
-	vector<float> array(float begin,float end,unsigned int number){
-		float step=(end-begin)/number;
-		vector<float> t;
-		for(float i= 0.0; t.size()<=number; i+=step){
-			t.push_back(i);
-		}
-		return t;
-	}
 
   virtual ~Curve2D() {
     clear();
