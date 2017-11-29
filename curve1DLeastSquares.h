@@ -37,7 +37,7 @@ class Curve1DLeastSquares : public Curve1D {
     b = (ys - a*xs)/nbPts();
     return(a*x+b);
   }
-
+};
 
 class Curve1DLeastSquaresConstructor : public Curve1DConstructor {
  public:
