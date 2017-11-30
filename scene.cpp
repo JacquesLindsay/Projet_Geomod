@@ -8,6 +8,7 @@
 #include "curve2DCircleRadius.h"
 #include "curve2DLagrange.h"
 #include "curve2DSpline.h"
+#include "curve2DCasteljau.h"
 #include "curve1DLinear.h"
 #include "curve1DLeastSquares.h"
 
@@ -25,6 +26,7 @@ void Scene::initCurveBuilders() {
   addCurveBuilder(new Curve2DCircleRadiusConstructor());
   addCurveBuilder(new Curve2DLagrangeConstructor());
   addCurveBuilder(new Curve2DSplineConstructor());
+  addCurveBuilder(new Curve2DCasteljauConstructor());
 }
 
 
