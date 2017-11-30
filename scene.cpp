@@ -24,6 +24,7 @@ void Scene::initCurveBuilders() {
   addCurveBuilder(new Curve2DCircleConstructor());
   addCurveBuilder(new Curve2DCircleRadiusConstructor());
   addCurveBuilder(new Curve2DLagrangeConstructor());
+  addCurveBuilder(new Curve2DSplineConstructor());
 }
 
 
