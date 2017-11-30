@@ -2,7 +2,6 @@
 #define CURVE_1D_LEAST_SQUARES
 
 #include "curve1D.h"
-#include <iostream>
 
 class Curve1DLeastSquares : public Curve1D {
  public:
