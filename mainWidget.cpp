@@ -41,7 +41,7 @@ MainWindow::MainWindow()
    sp1->setStretchFactor(1,10);
    sp2->setStretchFactor(0,8);
    sp2->setStretchFactor(1,1);
-   
+
    connect(_timer,SIGNAL(timeout()),this,SLOT(timerEvent()));
 
    setCurrentFile(_DEFAULT_FILE_NAME);
@@ -49,7 +49,7 @@ MainWindow::MainWindow()
 }
 
 MainWindow::~MainWindow() {
-  // delete widgets here 
+  // delete widgets here
 }
 
 void MainWindow::timerEvent() {
@@ -179,7 +179,7 @@ void MainWindow::open() {
     QFile file(name);
     if (file.open(QIODevice::ReadOnly) && !name.isEmpty() && !name.isNull())
     {
-        setCurrentFile(name.section(".",0,0));
+        setCurrentFile(name.section(".",0,0).split('/').last());
         QTextStream stream(&file);
         QString data = stream.readAll();
         Scene *sce = Scene::get();
@@ -197,7 +197,11 @@ bool MainWindow::save() {
   else{
       Scene *sce = Scene::get();
       QString data = sce->dataToString();
-      QFile file(_CURRENT_PATH.canonicalPath()+_currentFile);
+      QString name=_CURRENT_PATH.canonicalPath()+_currentFile;
+      if(!name.contains(_APPLICATION_EXTENSION)){
+          name.append(_APPLICATION_EXTENSION);
+      }
+      QFile file(name);
       if (file.open(QIODevice::WriteOnly))
       {
           QTextStream stream(&file);
@@ -215,19 +219,20 @@ bool MainWindow::saveAs() {
     QString selectedfilter = "CurveMaster files (*"+_APPLICATION_EXTENSION+")";
     QString filter = selectedfilter+";; All files (*)";
     QString name = QFileDialog::getSaveFileName(this, "Save file", "", filter, &selectedfilter);
-    if(!name.contains(_APPLICATION_EXTENSION)){
-        name.append(_APPLICATION_EXTENSION);
+    if(name!=""){
+        if(!name.contains(_APPLICATION_EXTENSION)){
+            name.append(_APPLICATION_EXTENSION);
+        }
+        QFile file(name);
+        if (file.open(QIODevice::WriteOnly) && !name.isEmpty() && !name.isNull())
+        {
+            setCurrentFile(name.section(".",0,0).split('/').last());
+            QTextStream stream(&file);
+            stream << data << endl;
+            file.close();
+            return true;
+        }
     }
-    QFile file(name);
-    if (file.open(QIODevice::WriteOnly) && !name.isEmpty() && !name.isNull())
-    {
-        setCurrentFile(name);
-        QTextStream stream(&file);
-        stream << data << endl;
-        file.close();
-        return true;
-    }
-
   return false;
 }
 
@@ -327,6 +332,7 @@ void MainWindow::setCurrentFile(const QString &fileName) {
   if(_currentFile.isEmpty())
     shownName = _DEFAULT_FILE_NAME+_APPLICATION_EXTENSION;
   setWindowFilePath(shownName);
+  setWindowTitle(_currentFile + " | " + _APPLICATION_NAME);
 }
 
 void MainWindow::playAnimation() {
