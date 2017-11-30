@@ -7,7 +7,9 @@
 #include "curve2DCircle.h"
 #include "curve2DCircleRadius.h"
 #include "curve2DLagrange.h"
+#include "curve2DSpline.h"
 #include "curve1DLinear.h"
+
 
 
 Scene *Scene::_instance = NULL;
