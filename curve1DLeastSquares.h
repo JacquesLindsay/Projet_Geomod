@@ -1,5 +1,5 @@
-#ifndef CURVE1DLEASTSQUARES
-#define CURVE1DLEASTSQUARES
+#ifndef CURVE_1D_LEAST_SQUARES
+#define CURVE_1D_LEAST_SQUARES
 
 #include "curve1D.h"
 #include <iostream>
@@ -49,5 +49,5 @@ class Curve1DLeastSquaresConstructor : public Curve1DConstructor {
   virtual Curve1D *create(Curve1D *c,const QString &name) { return new Curve1DLeastSquares(c,name); }
 };
 
-#endif // CURVE1DLEASTSQUARES
+#endif // CURVE_1D_LEAST_SQUARES
 
