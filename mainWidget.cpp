@@ -318,12 +318,17 @@ void MainWindow::clearAll() {
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-  if(maybeSave()) {
-    clearAll();
-    event->accept();
-  } else {
-    event->ignore();
-  }
+    if(Scene::get()->nbCurves()==0){
+        event->accept();
+    }
+    else{
+        if(maybeSave()) {
+            clearAll();
+        event->accept();
+        } else {
+            event->ignore();
+        }
+    }
 }
 
 void MainWindow::setCurrentFile(const QString &fileName) {
