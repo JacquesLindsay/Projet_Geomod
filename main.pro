@@ -31,7 +31,8 @@ HEADERS += \
     curve2DLagrange.h \
     curve2DCircle.h \
     curve2DCircleRadius.h \
-    animatedPoint.h 
+    animatedPoint.h \
+    curve2DSpline
 
 TEMPLATE = app
 
