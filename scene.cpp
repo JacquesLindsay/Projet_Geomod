@@ -9,7 +9,7 @@
 #include "curve2DLagrange.h"
 #include "curve2DSpline.h"
 #include "curve1DLinear.h"
-
+#include "curve1DLeastSquares.h"
 
 
 Scene *Scene::_instance = NULL;
@@ -31,6 +31,7 @@ void Scene::initCurveBuilders() {
 // add 1D curve builders (functions) here
 void Scene::initFunctionBuilders() {
   addFunctionBuilder(new Curve1DLinearConstructor());
+  addFunctionBuilder(new Curve1DLeastSquaresConstructor());
 }
 
 
