@@ -7,11 +7,10 @@
 #include <iostream>
 #include <vector>
 
-//Thomas algorithm
 
 
 using namespace std;
-unsigned int N = 200;
+unsigned int N = 1000;
 
 
 // function to get the baryzentric coordinates - not used in the end-version
@@ -21,6 +20,8 @@ Vector2f baryzentric (Vector2f ptold,Vector2f pt, unsigned int j, unsigned int N
 	temp [1] = ptold[1]+(pt[1]-ptold[1])*(float)j/(float)N;
 	return temp;
 };
+
+//Our Curve2DSpline function means the B-Spline interpolation of the given points.
 
 class Curve2DSpline : public Curve2D {
 	public:
