@@ -41,7 +41,7 @@ class Curve2DSpline : public Curve2D {
 	vector<int> h;
     	p.moveTo(pt[0],pt[1]);
 	h.push_back(0);
-	//Kx and Ky will save the coordinates of the points later on
+	//Kx and Ky will save the coordinates of the points, where the B-Spline proceeds.
 	vector<double> Kx;
 	vector<double> Ky;
 	// filling x,y and h
