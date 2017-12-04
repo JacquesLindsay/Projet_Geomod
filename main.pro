@@ -1,5 +1,5 @@
 # define your application name here 
-TARGET = CurveMaster
+TARGET = yourAppName
 
 # add your source cpp files here 
 SOURCES += \
@@ -26,15 +26,8 @@ HEADERS += \
     curve2D.h \
     curve1DLinear.h \
     curve2DLinear.h \
-    curve2DLinearClosed.h \
-    curve2DBezier.h \
-    curve2DLagrange.h \
-    curve2DCircle.h \
-    curve2DCircleRadius.h \
-    curve2DSpline.h \
-    curve2DCasteljau.h \
-    animatedPoint.h 
-
+    animatedPoint.h \
+    curve1dleastsquares.h
 
 TEMPLATE = app
 

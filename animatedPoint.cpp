@@ -21,6 +21,11 @@ AnimatedPoint::AnimatedPoint(const Vector2f &pt) {
   _ycurve->add(Vector2f(t,pt[1]));
 }
 
+AnimatedPoint::AnimatedPoint(Curve1D *x, Curve1D *y) {
+    _xcurve=x;
+    _ycurve=y;
+}
+
 AnimatedPoint::AnimatedPoint(float x,float y) {
   Scene *sce = Scene::get();
   QStringList l = sce->functionTypes();

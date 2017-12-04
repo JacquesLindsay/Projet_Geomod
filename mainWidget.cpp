@@ -172,7 +172,6 @@ void MainWindow::newFile() {
 }
 
 void MainWindow::open() {
-    newFile();
     QString selectedfilter = "CurveMaster files (*"+_APPLICATION_EXTENSION+")";
     QString filter = selectedfilter+";; All files (*)";
     QString name = QFileDialog::getOpenFileName(this, "Open file", "", filter, &selectedfilter);
@@ -237,7 +236,7 @@ bool MainWindow::saveAs() {
 }
 
 void MainWindow::help() {
-  QFile readme("HELP.txt");
+  QFile readme("HEL.txt");
   if(readme.open(QIODevice::ReadOnly | QIODevice::Text)){
       QString content = readme.readAll();
       QMessageBox::information(this, "Help", content);
@@ -249,7 +248,7 @@ void MainWindow::help() {
 }
 
 void MainWindow::about() {
-  QString h = tr("<center><font size='12'>CurveMaster v. 1.21</font></center><br>"
+  QString h = tr("<center><font size='12'>CurveMaster v. 1.74</font></center><br>"
          "Copyright (C) 2017 <br>"
          "Jacques Lindsay"
          " <a href='jacques.lindsay@orange.fr'>jacques.lindsay@orange.fr</a> <br>"

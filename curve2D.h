@@ -116,28 +116,28 @@ class Curve2D {
   }
 
   inline QString curveToString(){
-      QString curve = QString();
-      for(unsigned int j=0;j<_points.size(); j++){
-          if(j>0){
-              curve.append(';');
-          }
-          Curve1D *x=_points.at(j)->getXCurve();
-          Curve1D *y=_points.at(j)->getYCurve();
-          curve.append(x->name());
-          curve.append(',');
-          for(unsigned int i=0;i<x->nbPts(); i++){
-              if(i>0){
-                  curve.append(',');
-              }
-              curve.append(QString::number(x->get(i)[0]));
-              curve.append(" ");
-              curve.append(QString::number(x->get(i)[1]));
-              curve.append(" ");
-              curve.append(QString::number(y->get(i)[1]));
-          }
-      }
-      return curve;
-  }
+        QString curve = QString();
+        for(unsigned int j=0;j<_points.size(); j++){
+            if(j>0){
+                curve.append(';');
+            }
+            Curve1D *x=_points.at(j)->getXCurve();
+            Curve1D *y=_points.at(j)->getYCurve();
+            curve.append(x->name());
+            curve.append(',');
+            for(unsigned int i=0;i<x->nbPts(); i++){
+                if(i>0){
+                    curve.append(',');
+                }
+                curve.append(QString::number(x->get(i)[0]));
+                curve.append(" ");
+                curve.append(QString::number(x->get(i)[1]));
+                curve.append(" ");
+                curve.append(QString::number(y->get(i)[1]));
+            }
+        }
+        return curve;
+    }
 
   virtual QPainterPath path(float frame) = 0;
 

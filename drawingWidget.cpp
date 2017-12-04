@@ -4,6 +4,9 @@
 #include "drawingWidgetItems.h"
 #include <QMouseEvent>
 #include <QKeyEvent>
+#include <iostream>
+
+using namespace std;
 
 DrawingWidget::DrawingWidget(MainWindow *mainWindow,QWidget *parent)
   : QGraphicsView(parent),
@@ -25,7 +28,7 @@ void DrawingWidget::setResol(int w,int h) {
 }
 
 DrawingWidget::~DrawingWidget() {
-
+  
 }
 
 void DrawingWidget::drawBackground(QPainter * painter, const QRectF & rect) {
@@ -61,7 +64,7 @@ void DrawingWidget::mouseMoveEvent(QMouseEvent *event) {
 
   QPointF pos = mapToScene(QPoint(event->x(),event->y()));
 
-  // the create mode
+  // the create mode 
   if(sce->currentTool()==Scene::CREATE_CURVE) {
     int curveInd = sce->selectedCurve();
     if(curveInd==-1)
@@ -77,7 +80,7 @@ void DrawingWidget::mouseMoveEvent(QMouseEvent *event) {
 void DrawingWidget::mousePressEvent(QMouseEvent *event) {
   QGraphicsView::mousePressEvent(event);
 
-
+  
   Scene *sce = Scene::get();
   if(sce->isAnimated()) {
     return;
@@ -91,50 +94,50 @@ void DrawingWidget::mousePressEvent(QMouseEvent *event) {
 
       Curve2D *curve;
       if(sce->selectedCurve()==-1) {
-    // need to create a new curve
-    curve = sce->createCurve(sce->currentCurveType());
-    addCurve(curve);
-
+	// need to create a new curve 
+	curve = sce->createCurve(sce->currentCurveType());
+	addCurve(curve);
+	
       } else {
-    curve = sce->getCurve(sce->selectedCurve());
+	curve = sce->getCurve(sce->selectedCurve());
       }
-
-      // add a point to this curve
+      
+      // add a point to this curve 
       addPointToSelectedCurve(pos.x(),pos.y());
     } else if(event->buttons() & Qt::RightButton) {
-      // end of curve
+      // end of curve 
       if(sce->selectedCurve()>=0) {
-    sce->setSelectedCurve(-1);
-    sce->cleanSelectedPoints();
-    selectionChanged();
+	sce->setSelectedCurve(-1);
+	sce->cleanSelectedPoints();
+	selectionChanged();
       }
     }
 
-    // EDIT MODE
+    // EDIT MODE 
   } else if(sce->currentTool()==Scene::EDIT_CURVE) {
     if(sce->selectedCurve()>=0 && sce->selectedPoint()>=0) {
       ControlPoint2D *cc = NULL;
       switch(sce->editMode()) {
       case Scene::EDIT_ADD_BEFORE:
-    cc = _points[sce->selectedCurve()][sce->selectedPoint()];
-    if(!(items(event->pos()).contains(cc))) {
-      addPointBeforeSelectedPoint(pos.x(),pos.y());
-    }
-    break;
+	cc = _points[sce->selectedCurve()][sce->selectedPoint()];
+	if(!(items(event->pos()).contains(cc))) {
+	  addPointBeforeSelectedPoint(pos.x(),pos.y());
+	}
+	break;
       case Scene::EDIT_ADD_AFTER:
-    cc = _points[sce->selectedCurve()][sce->selectedPoint()];
-    if(!(items(event->pos()).contains(cc))) {
-      addPointAfterSelectedPoint(pos.x(),pos.y());
-    }
-    break;
+	cc = _points[sce->selectedCurve()][sce->selectedPoint()];
+	if(!(items(event->pos()).contains(cc))) {
+	  addPointAfterSelectedPoint(pos.x(),pos.y());
+	}
+	break;
       case Scene::EDIT_DEL_PT:
-    deleteSelectedPoint();
-    break;
+	deleteSelectedPoint();
+	break;
       default: break;
       }
     }
   }
-
+  
 }
 
 void DrawingWidget::mouseReleaseEvent(QMouseEvent *event) {
@@ -142,7 +145,7 @@ void DrawingWidget::mouseReleaseEvent(QMouseEvent *event) {
 
   QGraphicsView::mouseReleaseEvent(event);
   Scene *sce = Scene::get();
-
+  
   if(sce->isAnimated()) {
     return;
   }
@@ -152,12 +155,12 @@ void DrawingWidget::mouseReleaseEvent(QMouseEvent *event) {
 
 
 void DrawingWidget::addCurve(Curve2D *curve) {
-  // add curve to the scene
+  // add curve to the scene 
   Scene *sce = Scene::get();
   sce->addCurve(curve);
   sce->setSelectedCurve(sce->nbCurves()-1);
-
-  // add graphics items
+  
+  // add graphics items 
   _curves.push_back(new Curve2DDrawer(this,sce->nbCurves()-1));
   _gscene->addItem(_curves[_curves.size()-1]);
   _points.push_back(vector<ControlPoint2D *>());
@@ -179,7 +182,7 @@ void DrawingWidget::addPointToSelectedCurve(float x,float y) {
   Curve2D *curve = sce->getCurve(curveInd);
   curve->add(x,y);
   sce->setSelectedPoint(curve->nbPts()-1);
-
+  
   // add graphics items
   ControlPoint2D *cc = new ControlPoint2D(this,curveInd,curve->nbPts()-1);
   _points[curveInd].push_back(cc);
@@ -213,7 +216,7 @@ void DrawingWidget::deleteSelectedCurve() {
   }
   _points[curveInd].clear();
   _points.erase(_points.begin()+curveInd);
-
+  
   sce->setSelectedCurve(-1);
   sce->cleanSelectedPoints();
   selectionChanged();
@@ -232,15 +235,15 @@ void DrawingWidget::addPointBeforeSelectedPoint(float x,float y) {
   int curveInd = sce->selectedCurve();
   int ptInd = sce->selectedPoint();
 
-  if(curveInd<0 || ptInd<0) return;
+  if(curveInd<0 || ptInd<0) return; 
 
-  // add pt to the curve
+  // add pt to the curve 
   Curve2D *curve = sce->getCurve(curveInd);
   curve->addBefore(ptInd,x,y);
 
   // create graphics item
   ControlPoint2D *cc = new ControlPoint2D(this,curveInd,ptInd);
-  _points[curveInd].insert(_points[curveInd].begin()+ptInd,cc);
+  _points[curveInd].insert(_points[curveInd].begin()+ptInd,cc);  
   _gscene->addItem(cc);
 
   // update pt indices
@@ -260,13 +263,13 @@ void DrawingWidget::addPointAfterSelectedPoint(float x,float y) {
 
   if(curveInd<0 || ptInd<0) return;
 
-  // add pt to the curve
+  // add pt to the curve 
   Curve2D *curve = sce->getCurve(curveInd);
   curve->addAfter(ptInd,x,y);
 
   // create graphics item
   ControlPoint2D *cc = new ControlPoint2D(this,curveInd,ptInd+1);
-  _points[curveInd].insert(_points[curveInd].begin()+ptInd+1,cc);
+  _points[curveInd].insert(_points[curveInd].begin()+ptInd+1,cc);  
   _gscene->addItem(cc);
 
   // update pt indices
@@ -294,7 +297,7 @@ void DrawingWidget::deleteSelectedPoint() {
   for(unsigned int i=ptInd;i<_points[curveInd].size();++i) {
     _points[curveInd][i]->setPtInd(i);
   }
-
+  
   sce->cleanSelectedPoints();
 
   if(curve->nbPts()==0) {

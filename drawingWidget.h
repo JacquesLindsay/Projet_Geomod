@@ -6,8 +6,6 @@
 #include <vector>
 #include "curve2D.h"
 
-using namespace std;
-
 class MainWindow;
 class ControlPoint2D;
 class Curve2DDrawer;
@@ -23,12 +21,12 @@ class DrawingWidget : public QGraphicsView {
     scene()->update(0,0,width(),height());
   }
 
-  inline void transform(vector<Curve2D*> curves) {
-      deleteAllCurves();
-      for(unsigned int i=0; i<curves.size(); i++){
-          addCurve(curves.at(i));
-      }
-  }
+  inline void transform(std::vector<Curve2D*> curves) {
+        deleteAllCurves();
+        for(unsigned int i=0; i<curves.size(); i++){
+            addCurve(curves.at(i));
+        }
+    }
 
   void refreshAnimation();
 
@@ -55,7 +53,7 @@ class DrawingWidget : public QGraphicsView {
   void addPointBeforeSelectedPoint(float x,float y);
   void addPointAfterSelectedPoint(float x,float y);
   void deleteSelectedPoint();
-
+  
   std::vector<std::vector<ControlPoint2D *> > _points;
   std::vector<Curve2DDrawer *>                _curves;
 };

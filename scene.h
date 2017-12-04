@@ -11,7 +11,6 @@
 #include "curve1D.h"
 #include "curve2DLinear.h"
 #include "curve1DLinear.h"
-#include "curve1DLeastSquares.h"
 #include "animatedPoint.h"
 
 using namespace std;
@@ -23,13 +22,13 @@ class Scene {
   enum { KF_MODE_PT=0, KF_MODE_CURVE=1,KF_MODE_SCENE=2 };
 
   ~Scene();
-  
+
   static Scene *get() {
     if(!_instance) {
       _instance = new Scene();
     }
     return _instance;
-  } 
+  }
 
   inline void clean() {
     for(unsigned int i=0;i<nbCurves();++i) {
@@ -56,7 +55,7 @@ class Scene {
     curve->setBrushColor(currentBrushColor());
     curve->setPenWidth(currentPenWidth());
     return curve;
-  } 
+  }
 
   inline Curve1D *createFunction(const QString &type,Curve1D *c=NULL) {
 
@@ -65,12 +64,12 @@ class Scene {
     Curve1DConstructor *cc = n->second;
     Curve1D *curve = c ? cc->create(c,type) : cc->create(type);
     return curve;
-  } 
+  }
 
   inline void addCurve(Curve2D *curve) {
     _curves.push_back(curve);
   }
-  
+
   inline void delCurve(unsigned int i) {
     assert(i<nbCurves());
     delete _curves[i];
@@ -79,7 +78,7 @@ class Scene {
   }
 
   inline void addKeyframe(int curveInd,int ptInd) {
-    // add keyframe to a particular point 
+    // add keyframe to a particular point
     if(curveInd<0 || ptInd<0)
       return;
 
@@ -104,7 +103,7 @@ class Scene {
   }
 
   inline void addKeyframe() {
-    // add keyframe to the whole scene 
+    // add keyframe to the whole scene
     for(unsigned int i=0;i<nbCurves();++i) {
       addKeyframe(i);
     }
@@ -127,16 +126,16 @@ class Scene {
     // del keyframe to a curve
     if(curveInd<0)
       return;
-    
+
     assert(curveInd<(int)nbCurves());
-    
+
     for(unsigned int i=0;i<_curves[curveInd]->nbPts();++i) {
       delKeyframe(curveInd,i);
     }
   }
 
   inline void delKeyframe() {
-    // del keyframe to the whole scene 
+    // del keyframe to the whole scene
     for(unsigned int i=0;i<nbCurves();++i) {
       delKeyframe(i);
     }
@@ -145,21 +144,21 @@ class Scene {
   unsigned int nextKeyframe(int curveInd,int ptInd) {
     if(curveInd<0 || ptInd<0)
       return currentFrame();
-    
+
     assert(curveInd<(int)nbCurves());
     assert(ptInd<(int)_curves[curveInd]->nbPts());
-    
+
     AnimatedPoint *pt = _curves[curveInd]->get(ptInd);
     unsigned int current = currentFrame();
     unsigned int found = nbFrames()-1;
-    
+
     Curve1D *c;
     c = pt->getXCurve();
     for(unsigned int i=0;i<c->nbPts();++i) {
       Vector2f p = c->get(i);
       if(p[0]>(float)current && p[0]<=(float)found) {
-	found = (unsigned int)p[0];
-	break;
+    found = (unsigned int)p[0];
+    break;
       }
     }
 
@@ -167,8 +166,8 @@ class Scene {
     for(unsigned int i=0;i<c->nbPts();++i) {
       Vector2f p = c->get(i);
       if(p[0]>(float)current && p[0]<=(float)found) {
-	found = (unsigned int)p[0];
-	break;
+    found = (unsigned int)p[0];
+    break;
       }
     }
     return found;
@@ -177,45 +176,45 @@ class Scene {
   unsigned int nextKeyframe(int curveInd) {
     if(curveInd<0)
       return currentFrame();
-    
+
     assert(curveInd<(int)nbCurves());
-    
+
     unsigned int found = nbFrames()-1;
     for(unsigned int i=0;i<_curves[curveInd]->nbPts();++i) {
       found = std::min(found,nextKeyframe(curveInd,i));
     }
-    
+
     return found;
   }
 
-  unsigned int nextKeyframe() {    
+  unsigned int nextKeyframe() {
     unsigned int found = nbFrames()-1;
-    
+
     for(unsigned int i=0;i<nbCurves();++i) {
       found = std::min(found,nextKeyframe(i));
     }
-    
+
     return found;
   }
 
   unsigned int prevKeyframe(int curveInd,int ptInd) {
     if(curveInd<0 || ptInd<0)
       return currentFrame();
-    
+
     assert(curveInd<(int)nbCurves());
     assert(ptInd<(int)_curves[curveInd]->nbPts());
-    
+
     AnimatedPoint *pt = _curves[curveInd]->get(ptInd);
     unsigned int current = currentFrame();
     unsigned int found = 0;
-    
+
     Curve1D *c;
     c = pt->getXCurve();
     for(int i=(int)c->nbPts()-1;i>=0;--i) {
       Vector2f p = c->get(i);
       if(p[0]<(float)current && p[0]>=(float)found) {
-	found = (unsigned int)p[0];
-	break;
+    found = (unsigned int)p[0];
+    break;
       }
     }
 
@@ -223,8 +222,8 @@ class Scene {
     for(int i=(int)c->nbPts()-1;i>=0;--i) {
       Vector2f p = c->get(i);
       if(p[0]<(float)current && p[0]>=(float)found) {
-	found = (unsigned int)p[0];
-	break;
+    found = (unsigned int)p[0];
+    break;
       }
     }
 
@@ -234,28 +233,28 @@ class Scene {
   unsigned int prevKeyframe(int curveInd) {
     if(curveInd<0)
       return currentFrame();
-    
+
     assert(curveInd<(int)nbCurves());
-    
+
     unsigned int found = 0;
     for(unsigned int i=0;i<_curves[curveInd]->nbPts();++i) {
       found = std::max(found,prevKeyframe(curveInd,i));
     }
-    
+
     return found;
   }
 
-  unsigned int prevKeyframe() {    
+  unsigned int prevKeyframe() {
     unsigned int found = 0;
-    
+
     for(unsigned int i=0;i<nbCurves();++i) {
       found = std::max(found,prevKeyframe(i));
     }
-    
+
     return found;
   }
 
-  
+
   inline unsigned int nbFrames() const {
     return _nbFrames;
   }
@@ -263,7 +262,7 @@ class Scene {
   inline unsigned int fps() const {
     return _fps;
   }
-  
+
   inline unsigned int width() const {
     return _width;
   }
@@ -276,7 +275,7 @@ class Scene {
     _nbFrames = nbFrames;
     _fps = fps;
   }
-  
+
   inline void setCanevaSettings(unsigned int width,unsigned int height) {
     _width = width;
     _height = height;
@@ -304,9 +303,9 @@ class Scene {
   QStringList curveTypes() const {
     QStringList l;
     std::map<QString,Curve2DConstructor *>::const_iterator mit(_curveBuilders.begin()),mend(_curveBuilders.end());
-  
-    for(;mit!=mend;++mit) { 
-      l.push_back(mit->first); 
+
+    for(;mit!=mend;++mit) {
+      l.push_back(mit->first);
     }
     return l;
   }
@@ -314,8 +313,8 @@ class Scene {
   QStringList functionTypes() const {
     QStringList l;
     std::map<QString,Curve1DConstructor *>::const_iterator mit(_functionBuilders.begin()),mend(_functionBuilders.end());
-  
-    for(;mit!=mend;++mit) { 
+
+    for(;mit!=mend;++mit) {
       l.push_back(mit->first);
     }
     return l;
@@ -339,7 +338,7 @@ class Scene {
   }
 
   void setCurrentKfType(int curveInd,int ptInd,const QString &t) {
-    // set function type for current selected control point 
+    // set function type for current selected control point
     if(curveInd<0 || ptInd<0) {
       return;
     }
@@ -348,12 +347,12 @@ class Scene {
     assert(ptInd<(int)(getCurve(curveInd)->nbPts()));
 
     _currentKfType = t;
-    
+
     getCurve(curveInd)->get(ptInd)->setType(t);
   }
 
   void setCurrentKfType(int curveInd,const QString &t) {
-    // set function type for selected curve  
+    // set function type for selected curve
     if(curveInd<0) {
       return;
     }
@@ -361,14 +360,14 @@ class Scene {
     assert(curveInd<(int)nbCurves());
 
     _currentKfType = t;
-    
+
     for(unsigned int i=0;i<getCurve(curveInd)->nbPts();++i) {
       setCurrentKfType(curveInd,i,t);
     }
   }
 
   void setCurrentKfType(const QString &t) {
-    // set functin type for the whole scene 
+    // set functin type for the whole scene
     for(unsigned int i=0;i<nbCurves();++i) {
       setCurrentKfType(i,t);
     }
@@ -382,7 +381,7 @@ class Scene {
   inline void setCurrentKfMode(int m) {
     _kfMode = m;
   }
-  
+
   inline int currentTool() const {
     return _currentTool;
   }
@@ -397,7 +396,7 @@ class Scene {
 
   inline void setSelectedCurve(int i) {
     _selectedCurve = i;
-  } 
+  }
 
   inline std::vector<int> selectedPoints() const {
     return _selectedPoints;
@@ -406,12 +405,12 @@ class Scene {
   inline int selectedPoint() const {
     return _selectedPoints.empty() ? -1 : _selectedPoints[0];
   }
-  
+
   inline int selectedPoint(unsigned int i) const {
     assert(i<_selectedPoints.size());
     return _selectedPoints[i];
   }
-  
+
   inline void setSelectedPoints(const std::vector<int> &pts) {
     _selectedPoints = pts;
   }
@@ -443,7 +442,7 @@ class Scene {
 
     for(unsigned int i=0;i<_selectedPoints.size();++i) {
       if((int)ptInd==_selectedPoints[i])
-	return true;
+    return true;
     }
 
     return false;
@@ -529,11 +528,11 @@ class Scene {
       }
       return _curves;
   }
-  
+
  private:
   Scene();
 
-  // there will be only one instance of scene 
+  // there will be only one instance of scene
   static Scene *_instance;
 
   void initCurveBuilders();
@@ -554,7 +553,7 @@ class Scene {
   // all the objects (2D curves)
   std::vector<Curve2D *> _curves;
 
-  // the builder 
+  // the builder
   std::map<QString,Curve2DConstructor *> _curveBuilders;
   std::map<QString,Curve1DConstructor *> _functionBuilders;
 
